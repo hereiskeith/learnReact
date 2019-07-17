@@ -3,19 +3,18 @@ import React from 'react';
 class CommentBox extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        /* this.state = {
             value: ''
-        };
-        //this.handleChange = this.handleChange.bind(this);
+        }; */
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-   /* handleChange(event) {
-        this.setState({
-            value: event.target.value
-        })
-    } */
+   handleChange(e) {
+        this.props.onTypedTextChange(e.target.value);
+    }
     handleSubmit(e) {
-        this.props.onAddComment(this.textInput.value);
+        this.props.onAddComment(this.props.value);
+        this.props.onAfterAddComment();
         e.preventDefault();
     }
     render() {
@@ -29,9 +28,9 @@ class CommentBox extends React.Component {
                     type="text"
                     className="form-control"
                     placeholder="Please leave your comment"
-                    /*onChange={this.handleChange}
-                    value={this.state.value}*/
-                     ref={(textInput) => {this.textInput = textInput}}
+                    onChange={this.handleChange}
+                    value={this.props.value}
+                     // ref={(textInput) => {this.textInput = textInput}}
                     />
                     <button type="submit" className="btn btn-primary">
                         Submit

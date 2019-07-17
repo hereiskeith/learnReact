@@ -11,9 +11,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments : ['This is the first comment']
+      comments : ['This is the first comment'],
+      value : '',
     };
     this.addComment = this.addComment.bind(this);
+    this.afterAddComment = this.afterAddComment.bind(this);
+    this.addValue = this.addValue.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   addComment(comment) {
     this.setState({
@@ -21,8 +25,28 @@ class App extends React.Component {
     }
     )
   }
+  addValue(value) {
+      this.setState({
+          value: value,
+      }
+      )
+    }
+    afterAddComment() {
+        this.setState({
+                value: '',
+            }
+        )
+    }
+    handleDelete(index) {
+      const {comments} = this.state;
+      comments.splice(index,1);
+      this.setState({
+          comments : comments
+      })
+    }
+
   render() {
-    const {comments} = this.state
+    const {comments} = this.state;
     return (
         <div className="App">
           <header className="App-header">
@@ -42,10 +66,16 @@ class App extends React.Component {
           <DigitalClock/>
           <NameCard name='Keith' number={3439883668} isHuman tags={tags}/>
           <LikesButton/>
-          <CommentLists comments={comments}/>
+          <CommentLists
+              comments={comments}
+              onHandleDelete={this.handleDelete}
+          />
           <CommentBox
+              value={this.state.value}
               numOfComments={comments.length}
               onAddComment={this.addComment}
+              onAfterAddComment={this.afterAddComment}
+              onTypedTextChange={this.addValue}
           />
         </div>
     );
